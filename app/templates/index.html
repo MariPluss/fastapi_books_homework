@@ -1,0 +1,274 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book CRUD Application</title>
+
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script defer src="/static/js/scripts.js"></script>
+
+    <style>
+        *, html {
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: aliceblue;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+        }
+
+        .form-container {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .form-inline {
+            display: inline-block;
+            vertical-align: top;
+            min-width: 20rem;
+            margin: 2rem;
+        }
+
+        .form-group {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .form-group input {
+            margin-left: 1rem;
+        }
+
+        h5 {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .filter-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .filter-container input {
+            min-width: 220px;
+        }
+
+        .filter-container select {
+            min-width: 150px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container mt-4">
+        <h1 class="text-center">Book CRUD Application</h1>
+
+        <!-- Основные формы -->
+        <div class="form-container mt-4">
+
+            <!-- Создание книги -->
+            <div class="form-inline">
+                <h5>Create Book</h5>
+
+                <form id="create-book-form">
+                    <div class="form-group">
+                        <label for="book_name">Name</label>
+                        <input type="text" class="form-control"
+                               id="book_name" name="book_name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="author">Author</label>
+                        <input type="text" class="form-control"
+                               id="author" name="author" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="genre">Genre</label>
+                        <input type="text" class="form-control"
+                               id="genre" name="genre" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="date_issue">Date</label>
+                        <input type="date" class="form-control"
+                               id="date_issue" name="date_issue" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="price">Price</label>
+                        <input type="number" step="0.01"
+                               class="form-control"
+                               id="price" name="price" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block">
+                        Create
+                    </button>
+                </form>
+            </div>
+
+            <!-- Просмотр книги -->
+            <div class="form-inline">
+                <h5>View Book by ID</h5>
+
+                <form id="view-book-form">
+                    <div class="form-group">
+                        <label for="view_book_id">ID</label>
+                        <input type="number" class="form-control"
+                               id="view_book_id" name="view_book_id" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-info btn-block">
+                        Get
+                    </button>
+                </form>
+
+                <div id="view-book-result" class="mt-2"></div>
+            </div>
+
+            <!-- Обновление книги -->
+            <div class="form-inline">
+                <h5>Update Book</h5>
+
+                <form id="update-book-form">
+                    <div class="form-group">
+                        <label for="update_book_id">ID</label>
+                        <input type="number" class="form-control"
+                               id="update_book_id" name="update_book_id" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="update_book_name">Name</label>
+                        <input type="text" class="form-control"
+                               id="update_book_name" name="update_book_name">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="update_author">Author</label>
+                        <input type="text" class="form-control"
+                               id="update_author" name="update_author">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="update_genre">Genre</label>
+                        <input type="text" class="form-control"
+                               id="update_genre" name="update_genre">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="update_date_issue">Date</label>
+                        <input type="date" class="form-control"
+                               id="update_date_issue" name="update_date_issue">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="update_price">Price</label>
+                        <input type="number" step="0.01"
+                               class="form-control"
+                               id="update_price" name="update_price">
+                    </div>
+
+                    <button type="submit" class="btn btn-warning btn-block">
+                        Update
+                    </button>
+                </form>
+            </div>
+
+            <!-- Удаление книги по ID -->
+            <div class="form-inline">
+                <h5>Delete Book</h5>
+
+                <form id="delete-book-form">
+                    <div class="form-group">
+                        <label for="delete_book_id">ID</label>
+                        <input type="number" class="form-control"
+                               id="delete_book_id" name="delete_book_id" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-danger btn-block">
+                        Delete
+                    </button>
+                </form>
+            </div>
+
+        </div>
+
+        <hr>
+
+        <!-- Список книг -->
+        <h3>Books List</h3>
+
+        <!-- Домашнее задание №1: форма фильтрации -->
+        <form id="filter-books-form" class="filter-container">
+
+            <input type="text"
+                   id="filter-text"
+                   class="form-control"
+                   placeholder="Enter search text">
+
+            <select id="filter-field" class="form-control">
+                <option value="book_name">Book Name</option>
+                <option value="author">Author</option>
+                <option value="genre">Genre</option>
+                <option value="id">ID</option>
+            </select>
+
+            <button type="submit" class="btn btn-primary">
+                Filter
+            </button>
+
+            <button type="button"
+                    id="reset-filter"
+                    class="btn btn-secondary">
+                Reset
+            </button>
+
+        </form>
+
+        <!-- Домашнее задание №2: кнопка удаления в таблице -->
+        <div class="table-responsive">
+            <table class="table table-bordered" id="books-table">
+                <thead class="thead-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>Book Name</th>
+                        <th>Author</th>
+                        <th>Genre</th>
+                        <th>Date of Issue</th>
+                        <th>Price</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <!-- Книги загружаются через JavaScript -->
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" defer></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" defer></script>
+</body>
+</html>
